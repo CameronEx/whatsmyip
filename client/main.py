@@ -9,16 +9,16 @@ import requests
 import updaters
 
 
-def resolve(domain):
+def resolve(target_domain):
     
     # Spawn a resolver isntance
     resolver = dns.resolver.Resolver()
 
     # Attempt to resolve the domain
     try:
-        answer = resolver.query(domain, "A")
+        answer = resolver.query(target_domain, "A")
     except NXDOMAIN:
-        sys.exit("Unable to resolve {} - Check your A record. Exiting without action".format(domain))
+        sys.exit("Unable to resolve {} - Check your A record. Exiting without action".format(target_domain))
 
     if len(answer) != 1:
         sys.ext("Multiple A records found. That's too complex for me right now. Exiting without action.")
@@ -41,9 +41,10 @@ def compare_current_ip(server, a_record):
 def update_dns(current_ip, provider):
 
     # Call the updater module, specific of the provider
-    if provider == 'Rackspace: Cloud DNS':
-        updaters.rax(current_ip)
-    else if provider == 'AWS: Route 53':
+    if provider == 'rax':
+        import vendor_scripts.rax.rax_update
+        vendor_scripts.rax.rax_update.main(current_ip)
+    else if provider == 'aws':
         updaters.aws(current_ip)
     else:
         sys.exit("I'm not compatible with the provider listed. Please run setup.py again.")
@@ -53,10 +54,10 @@ def main():
 
     # Load the variables saved by setup.py
     with open('config.pkl', 'rb') as f:
-        domain, server, provider = pickle.load(f)
+        target_domain, server, provider = pickle.load(f)
 
     # Obtain the current A record of the saved domain
-    a_record = resolve(domain)
+    a_record = resolve(target_domain)
 
     # Compare and, if required, update the A record
     compare_current_ip(server, a_record, provider)
