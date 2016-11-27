@@ -2,25 +2,24 @@
 
 """This script will obtain an auth token from the Rackspace cloud """
 
-
 import sys
 import json
+import requests
 
 def get_token(username, api_key):
 
 	url = 'https://identity.api.rackspacecloud.com/v2.0/tokens'
-	payload = {"auth":{"RAX-KSKEY:apiKeyCredentials":{"username":username,"apiKey":apikey}}}
+	payload = {"auth":{"RAX-KSKEY:apiKeyCredentials":{"username":username,"apiKey":api_key}}}
 	headers = {'Content-Type': 'application/json'}
 
-        # Attempt to hit the authentication API
+    # Attempt to hit the authentication API
 	try:
-		r = requests.post(raxToken_endpoint, data=json.dumps(payload), headers=headers)
+		r = requests.post(url, data=json.dumps(payload), headers=headers)
 	except:
-		raise exception
 		sys.exit("\n\nUnable to call the Rackspace API, exiting.")
 
-        # If successful, return the token
-	return(r.json()['access']['token']['id'])i
+    # If successful, return the token
+	return(r.json()['access']['token']['id'])
 
 
 if __name__ == '__main__':

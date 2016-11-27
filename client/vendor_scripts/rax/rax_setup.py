@@ -16,10 +16,10 @@ def find_domain_id(account_num, target_domain, headers, url):
 		if domain['name'] == target_domain:
 			return domain['id']
 		else:
-			sys.ext("Was unable to find the domain '{}' under the supplied account".format(target_domain, account)
+			sys.exit("Was unable to find the domain '{}' under the supplied account".format(target_domain, account))
 
 
-def find_record_id(account_num, domain_id, headers, url)
+def find_record_id(account_num, domain_id, headers, url):
 	''' Parse through all records under our domain, to find our A record's ID. '''
 	
 	all_records = requests.get(url + '/domains/{}/records'.format(domain_id), headers=headers)
