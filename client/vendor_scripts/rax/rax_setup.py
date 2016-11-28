@@ -5,18 +5,19 @@
 
 import json
 from get_token import get_token
-
+import requests
+import sys
 
 def find_domain_id(account_num, target_domain, headers, url):
 	''' Parse through all domains under the account, to find our domain's ID. '''
 	
 	all_domains = requests.get(url + '/domains', headers=headers)
 
-	for domain in domains.json()['domains']:
+	for domain in all_domains.json()['domains']:
 		if domain['name'] == target_domain:
 			return domain['id']
 		else:
-			sys.exit("Was unable to find the domain '{}' under the supplied account".format(target_domain, account))
+			sys.exit("Was unable to find the domain '{}' under the supplied account".format(target_domain))
 
 
 def find_record_id(account_num, domain_id, headers, url):
@@ -32,7 +33,7 @@ def find_record_id(account_num, domain_id, headers, url):
 def main(username, api_key, account_num, target_domain):
 
 	headers = { 'X-Auth-Token':get_token(username, api_key) }
-	url = 'https://global.dns.api.rackspacecloud.com/v2/' + account_num
+	url = 'https://dns.api.rackspacecloud.com/v1.0/' + account_num
 
 	domain_id = find_domain_id(account_num, target_domain, headers, url)
 	record_ip = find_record_id(account_num, domain_id, headers, url)
