@@ -4,6 +4,7 @@
 
 import json
 import requests
+import pickle
 from get_token import get_token
 
 
@@ -13,7 +14,14 @@ def update_record(token, current_ip, url, domain_id, record_id):
     payload = { 'data':current_ip }
     headers = { 'X-Auth-Header':token , 'Content-Type': 'application/json' } 
     
-    update_record = request.put(url + '/domains/{}/records{}'.format(domain_id, record_id), data=json.dumps(payload), headers=headers)
+    for header in headers:
+    	print('{}:{}'.format(header, headers[header]))
+
+    try:
+    	update_record = requests.put(url + '/domains/{}/records{}'.format(domain_id, record_id), data=json.dumps(payload), headers=headers)
+    	print(update_record.status_code)
+    except:
+    	raise
 
 def main(current_ip):
     
@@ -22,6 +30,9 @@ def main(current_ip):
 
     token = get_token(username, api_key)
 
+    print("Rackspace domain ID : {}".format(domain_id))
+    print("A record ID: {}".format(record_id))
+    print("API URL: {}".format(url))
     update_record(token, current_ip, url, domain_id, record_id)
 
 if __name__ == '__main__':

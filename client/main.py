@@ -6,7 +6,7 @@ Designed to keep A records updated where static IP addresses are not an option, 
 import sys
 import dns.resolver
 import requests
-import updaters
+import pickle
 
 
 def resolve(target_domain):
@@ -17,6 +17,8 @@ def resolve(target_domain):
     # Attempt to resolve the domain
     try:
         answer = resolver.query(target_domain, "A")
+        print("{} resolves to {}".format(target_domain, answer))
+
     except NXDOMAIN:
         sys.exit("Unable to resolve {} - Check your A record. Exiting without action".format(target_domain))
 
@@ -26,13 +28,14 @@ def resolve(target_domain):
     return(answer)
 
 
-def compare_current_ip(server, a_record):
+def compare_current_ip(server, a_record, provider):
 
     # Make a request, to our server, for the current public IP address
     current_ip = requests.get(server).text
+    print("This host's current public IP address is: {}".format(current_ip))
 
     # Compare it to the existing A record for the specified domain
-    if current_ip = a_record:
+    if current_ip == a_record:
         sys.exit("Our current IP address, {}, matches the A record for {}. Exiting without action".format(current_ip, domain))
     else:
         update_dns(current_ip, provider)
@@ -42,10 +45,11 @@ def update_dns(current_ip, provider):
 
     # Call the updater module, specific of the provider
     if provider == 'rax':
+        print("Calling Rackspace to update the A record.")
+        
         import vendor_scripts.rax.rax_update
         vendor_scripts.rax.rax_update.main(current_ip)
-    else if provider == 'aws':
-        updaters.aws(current_ip)
+
     else:
         sys.exit("I'm not compatible with the provider listed. Please run setup.py again.")
 
