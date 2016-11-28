@@ -2,22 +2,22 @@
 
 """ This script will produce the configuration file nessecary to update A records in the Rackspace Cloud"""
 
-
+import pickle
 import json
 from get_token import get_token
 import requests
 import sys
 
-def find_domain_id(account_num, target_domain, headers, url):
+def find_domain_id(account_num, domain, headers, url):
 	''' Parse through all domains under the account, to find our domain's ID. '''
 	
 	all_domains = requests.get(url + '/domains', headers=headers)
 
-	for domain in all_domains.json()['domains']:
-		if domain['name'] == target_domain:
-			return domain['id']
+	for current_domain in all_domains.json()['domains']:
+		if current_domain['name'] == domain:
+			return current_domain['id']
 		
-	sys.exit("Was unable to find the domain '{}' under the supplied account".format(target_domain))
+	sys.exit("Was unable to find the domain '{}' under the supplied account".format(domain))
 
 
 def find_record_id(account_num, domain_id, headers, url):
@@ -30,22 +30,22 @@ def find_record_id(account_num, domain_id, headers, url):
 	        return record['id']
 
 
-def main(username, api_key, account_num, target_domain):
+def main(username, api_key, account_num, target_domain, domain):
 
 	headers = { 'X-Auth-Token':get_token(username, api_key) }
 	url = 'https://dns.api.rackspacecloud.com/v1.0/' + account_num
 
-	domain_id = find_domain_id(account_num, target_domain, headers, url)
-	record_ip = find_record_id(account_num, domain_id, headers, url)
+	domain_id = find_domain_id(account_num, domain, headers, url)
+	record_id = find_record_id(account_num, domain_id, headers, url)
 
-	with open('../../../vendor_config.pkl', 'rb') as f:
-		pickle.dump([domain_id, record_id, url, api_key, username], 'f')
+	with open('rax_config.pkl', 'wb') as f:
+		pickle.dump([domain_id, record_id, url, api_key, username], f)
 
 
 if __name__ == '__main__':
-	username = raw_input("Etner your Rackspace username: ")
+	username = raw_input("Enter your Rackspace username: ")
 	api_key = raw_input("Enter your Rackspace API key: ")
 	account_num = raw_input("Enter your Rackspace account number: ")
 	target_domain = raw_input("Enter the domain to be monitored: ")
-
+        domain =  raw_input("Enter the root domain (not subdomain): ")
 	main(username, api_key, account_num, target_domain)
