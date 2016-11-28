@@ -16,8 +16,8 @@ def find_domain_id(account_num, target_domain, headers, url):
 	for domain in all_domains.json()['domains']:
 		if domain['name'] == target_domain:
 			return domain['id']
-		else:
-			sys.exit("Was unable to find the domain '{}' under the supplied account".format(target_domain))
+		
+	sys.exit("Was unable to find the domain '{}' under the supplied account".format(target_domain))
 
 
 def find_record_id(account_num, domain_id, headers, url):
