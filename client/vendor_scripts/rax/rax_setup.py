@@ -20,13 +20,13 @@ def find_domain_id(account_num, domain, headers, url):
 	sys.exit("Was unable to find the domain '{}' under the supplied account".format(domain))
 
 
-def find_record_id(account_num, domain_id, headers, url):
+def find_record_id(account_num, domain_id, headers, url, target_domain):
 	''' Parse through all records under our domain, to find our A record's ID. '''
 	
 	all_records = requests.get(url + '/domains/{}/records'.format(domain_id), headers=headers)
 
 	for record in all_records.json()['records']:
-	    if record['name'] == 'exley.com.au' and record['type'] == 'A':
+	    if record['name'] == target_domain and record['type'] == 'A':
 	        return record['id']
 
 
@@ -36,7 +36,7 @@ def main(username, api_key, account_num, target_domain, domain):
 	url = 'https://dns.api.rackspacecloud.com/v1.0/' + account_num
 
 	domain_id = find_domain_id(account_num, domain, headers, url)
-	record_id = find_record_id(account_num, domain_id, headers, url)
+	record_id = find_record_id(account_num, domain_id, headers, url, target_domain)
 
 	with open('rax_config.pkl', 'wb') as f:
 		pickle.dump([domain_id, record_id, url, api_key, username], f)
