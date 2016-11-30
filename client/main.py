@@ -11,7 +11,7 @@ import pickle
 
 def resolve(target_domain):
     
-    # Spawn a resolver isntance
+    # Spawn a resolver instance
     resolver = dns.resolver.Resolver()
 
     # Attempt to resolve the domain

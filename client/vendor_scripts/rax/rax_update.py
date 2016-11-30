@@ -12,20 +12,23 @@ def update_record(token, current_ip, url, domain_id, record_id):
     ''' This module will use the PUT method to update the specified A record'''
     
     payload = { 'data':current_ip }
-    headers = { 'X-Auth-Header':token , 'Content-Type': 'application/json' } 
+    headers = { 'x-auth-token':token , 'Content-Type': 'application/json' } 
     
     for header in headers:
     	print('{}:{}'.format(header, headers[header]))
 
     try:
-    	update_record = requests.put(url + '/domains/{}/records{}'.format(domain_id, record_id), data=json.dumps(payload), headers=headers)
-    	print(update_record.status_code)
+    	print('Putting header: {}, payload {} to {}'.format(headers, json.dumps(payload), url + '/domains/{}/records/{}'))
+	update_record = requests.put(url + '/domains/{}/records/{}'.format(domain_id, record_id), data=json.dumps(payload), headers=headers)
+    	print(url + '/domains/{}/records/{}'.format(domain_id, record_id))
+	print(update_record.status_code)
+	print(update_record.text)
     except:
     	raise
 
 def main(current_ip):
     
-    with open('../../../vendor_config.pkl', 'rb') as f:
+    with open('rax_config.pkl', 'rb') as f:
         domain_id, record_id, url, api_key, username  = pickle.load(f)
 
     token = get_token(username, api_key)
