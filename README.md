@@ -9,9 +9,10 @@ This service is not dissimilar to those offered by no-ip.org, dyn, etc, however 
   - Azure: Route 53 (Coming soon)
 
 This provides the following advantage;
- - No additional costs (it's an open source application!)
- - BYO domain
- - Ability to contribute your own provider APIs
+
+  - No additional costs (it's an open source application!)
+  - BYO domain
+  - Ability to contribute your own provider APIs
  
 This application works by sending a HTTP request to a host running the server daemon.py script. This host will simple return the source IP address, of the host, in plain text.
 
@@ -34,9 +35,9 @@ The following Python packages are required, for this application to run. All can
 
 ### Installation
 
-There are two parts to this application, one being for your 'server' and another being for the client.
+There are two parts to this application, one being for your 'server' and another being for the 'client'. The server needs to sit outside your monitored network
 
-Clone this repository to the client, then run the setup.py in 
+1. Clone this repository to the client, then run the setup.py in 
 
 ```sh
 $ git clone https://gitlab.com/camerone/whatsmyip
@@ -52,10 +53,29 @@ Enter the domain youd like to monitor: home.domain.com
 Enter the FQDN (or IP address) of the host running the server application. Format should be http://host.com:port: http://domain.com:8081
 Enter your Rackspace Cloud account number: 12345
 Enter your Rackspace Cloud username: cloud_user
-Enter your API key: 43km3423431fe5gv43ed234vfb54pg11
+Enter your API key: PLfSy1Qgt89A60z5emrDPLfSy1Qgt89A60z5emrD
 Enter the root domain (not subdomain): domain.com
 $
 ```
+
+Once done, you'll want to configure the script to run every x amount of time. Here's an example cronjob that can be installed on a Linux client:
+```
+
+2. Copy the server scripts to the appropriate places on your server
+
+Note: Installation of the server daemon will depend on the operating system of your server. An upstart script has been included for those running Ubuntu.
+
+For Ubuntu, you can copy the daemon.py script to '/usr/local/bin/whatsmyip/daemon.py', ensure it is esecutable:
+```$ cp daemon.py /usr/local/bin/whatsmyip/daemon.py
+$ chmod +x /usr/local/bin/whatsmyip/daemon.py
+```
+
+Then install the upstart script and test it out:
+```$ cp whatsmyip.conf /etc/init/whatsmyip.conf
+$ sudo start whatsmyip'''
+
+You should be able to CURL against your server now, and have your IP address returned.
+
 
 ### Todos
 
