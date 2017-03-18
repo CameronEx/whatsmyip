@@ -59,7 +59,9 @@ $
 ```
 
 Once done, you'll want to configure the script to run every so often. Here's an example cronjob that can be installed on a Linux client, running the script every 60 minutes:
-```00 * * * * python /path/to/script```
+```
+00 * * * * python /path/to/script
+```
 
 2. Copy the server scripts to the appropriate places on your server
 
@@ -71,8 +73,10 @@ $ chmod +x /usr/local/bin/whatsmyip/daemon.py
 ```
 
 Then install the upstart script and test it out:
-```$ cp whatsmyip.conf /etc/init/whatsmyip.conf
-$ sudo start whatsmyip```
+```
+$ cp whatsmyip.conf /etc/init/whatsmyip.conf
+$ sudo start whatsmyip
+```
 
 You should be able to CURL against your server now, and have your IP address returned.
 
