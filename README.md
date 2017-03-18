@@ -58,8 +58,8 @@ Enter the root domain (not subdomain): domain.com
 $
 ```
 
-Once done, you'll want to configure the script to run every x amount of time. Here's an example cronjob that can be installed on a Linux client:
-```
+Once done, you'll want to configure the script to run every so often. Here's an example cronjob that can be installed on a Linux client, running the script every 60 minutes:
+```00 * * * * python /path/to/script```
 
 2. Copy the server scripts to the appropriate places on your server
 
