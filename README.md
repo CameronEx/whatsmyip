@@ -14,7 +14,7 @@ This provides the following advantage;
   - BYO domain
   - Ability to contribute your own provider APIs
  
-This application works by sending a HTTP request to a host running the server daemon.py script. This host will simple return the source IP address, of the host, in plain text.
+This application works by sending a HTTP request to a host running the server daemon.py script. This host will simply return the source IP address, of the host, in plain text.
 
 The client then compares this IP address to the current value of the configured A record, and will update it via the configured API if the two values differ.
 
@@ -40,7 +40,7 @@ There are two parts to this application, one being for your 'server' and another
 1. Clone this repository to the client, then run the setup.py in 
 
 ```sh
-$ git clone https://gitlab.com/camerone/whatsmyip
+$ git clone https://github.com/CameronEx/whatsmyip.git
 $ cd whatsmyip/client
 $ python setup.py
 ```
@@ -72,7 +72,7 @@ $ chmod +x /usr/local/bin/whatsmyip/daemon.py
 
 Then install the upstart script and test it out:
 ```$ cp whatsmyip.conf /etc/init/whatsmyip.conf
-$ sudo start whatsmyip'''
+$ sudo start whatsmyip```
 
 You should be able to CURL against your server now, and have your IP address returned.
 
@@ -90,10 +90,10 @@ License
 
 MIT
 
-   [Requests]: <http://docs.python-requests.org/en/master/>
-   [DNS.Resolver]: <http://www.dnspython.org/>
-   [Pickle]: <https://docs.python.org/2/library/pickle.html>
-   [Pick]: <https://pypi.python.org/pypi/pick>
-   [JSON]: <https://docs.python.org/2/library/json.html>
-   [Flask]: <http://flask.pocoo.org/>
+[Requests]: <http://docs.python-requests.org/en/master/>
+[DNS.Resolver]: <http://www.dnspython.org/>
+[Pickle]: <https://docs.python.org/2/library/pickle.html>
+[Pick]: <https://pypi.python.org/pypi/pick>
+[JSON]: <https://docs.python.org/2/library/json.html>
+[Flask]: <http://flask.pocoo.org/>
    
