@@ -6,7 +6,7 @@ This service is not dissimilar to those offered by no-ip.org, dyn, etc, however 
 
   - Rackspace: Cloud DNS - US
   - Rackspace: Cloud DNS - UK (Coming soon)
-  - Azure: Route 53 (Coming soon)
+  - AWS: Route 53 (Coming soon)
 
 This provides the following advantage;
 
