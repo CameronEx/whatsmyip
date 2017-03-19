@@ -12,9 +12,6 @@ def get_token(username, api_key):
     payload = {"auth":{"RAX-KSKEY:apiKeyCredentials":{"username":username,"apiKey":api_key}}}
     headers = {'Content-Type': 'application/json'}
 
-    for item in payload:
-        print("{}:{}".format(item, payload[item]))
-
     # Attempt to hit the authentication API
     try:
         print("Grabbing a token from {}".format(url))

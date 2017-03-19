@@ -19,9 +19,7 @@ def resolve(target_domain):
         answer = resolver.query(target_domain, "A")
 
         if len(answer) == 1:
-
-            for rdata in answer:
-                resolved_addr = rdata.to_text()
+            return answer[0].to_text()
 
         else:
             sys.exit("There where multiple addresses returned from our A record look up. This script can only work with 1")
@@ -32,8 +30,6 @@ def resolve(target_domain):
         sys.exit("Timed out whilst attempting to resolve '{}'. Check your host's DNS settings.".format(target_domain))
     except dns.resolver.DNSException:
         sys.exit("Unhandled DNS exception. Can not continue.")
-
-    return(resolved_addr)
 
 
 def compare_current_ip(server, a_record, provider, target_domain):
